@@ -1,0 +1,247 @@
+# kafka_prod1.yaml
+#
+# The production kafka nodes for prod1
+
+graphite_host: "localhost"
+graphite_port: 2003
+
+# Define sthe port that the hosts in this config listen for JMX on
+# ** THIS PORT HAS TO BE THE SAME FOR ALL HOSTS **
+query_port: 9999
+
+# global_host_alias: Will accept a blank space if alias and host is provided in host sets
+# ** LEAVE BLANK **
+global_host_alias:
+
+# Query definitions, every query needs
+#  - name - unique name
+#  - obj - shoudl be the mbean name
+#  - resultAlias - can be the same as name
+#  - attr - just use [], it's the wildcard
+#
+#   from jmxtrans format, "name" must be given for referencing
+#   the query in host sets
+queries:
+    - name: mempool
+      obj: "java.lang:type=MemoryPool,name=*"
+      resultAlias: "memorypool"
+      attr:
+        - "Usage"
+    - name: gc
+      obj: "java.lang:type=GarbageCollector,name=*"
+      resultAlias: "gc"
+      attr:
+        - "CollectionCount"
+        - "CollectionTime"
+    - name: sys
+      obj: "java.lang:type=OperatingSystem"
+      resultAlias: "sys"
+      attr:
+        - "SystemLoadAverage"
+        - "AvailableProcessors"
+        - "TotalPhysicalMemorySize"
+        - "FreePhysicalMemorySize"
+        - "TotalSwapSpaceSize"
+        - "FreeSwapSpaceSize"
+        - "OpenFileDescriptorCount"
+        - "MaxFileDescriptorCount"
+    - name: threads
+      obj : "java.lang:type=Threading"
+      resultAlias: "threads"
+      attr:
+        - "DaemonThreadCount"
+        - "PeakThreadCount"
+        - "ThreadCount"
+        - "TotalStartedThreadCount"
+    # kafka related mBeans have literal double quotes in the names
+    - name: kafka_broker_topic_metrics
+      obj : "kafka.server:type=BrokerTopicMetrics,*"
+      resultAlias: "brokertopicmetrics"
+      attr:
+        - "MeanRate"
+        - "OneMinuteRate"
+        - "FiveMinuteRate"
+        - "FifteenMinuteRate"
+        - "Count"
+    - name: kafka_request_per_sec
+      obj: "kafka.network:type=RequestMetrics,name=RequestsPerSec,*"
+      resultAlias: "requestsPerSec"
+      typeName: "request"
+      attr:
+        - "MeanRate"
+        - "OneMinuteRate"
+        - "FiveMinuteRate"
+        - "FifteenMinuteRate"
+        - "Count"
+    - name: kafka_log_flush
+      obj : "kafka.log:type=LogFlushStats,name=LogFlushRateAndTimeMs"
+      resultAlias: "logFlushRateAndTime"
+      attr:
+        - "OneMinuteRate"
+        - "FiveMinuteRate"
+        - "FifteenMinuteRate"
+        - "Mean"
+        - "98thPercentile"
+        - "Max"
+    - name: kafka_replica_manager
+      obj: "kafka.server:type=ReplicaManager,*"
+      resultAlias: "replicaManager"
+      attr:
+        - "Value"
+        - "MeanRate"
+        - "OneMinuteRate"
+        - "FiveMinuteRate"
+        - "FifteenMinuteRate"
+        - "Count"
+    - name: kafka_controller
+      obj: "kafka.controller:type=KafkaController,*"
+      resultAlias: "controller"
+      attr:
+        - "Value"
+    - name: kafka_controller_stats
+      obj: "kafka.controller:type=ControllerStats,*"
+      resultAlias: "leaderElection"
+      attr:
+        - "OneMinuteRate"
+        - "FiveMinuteRate"
+        - "FifteenMinuteRate"
+        - "Mean"
+        - "98thPercentile"
+        - "Max"
+    - name: kafka_max_lag
+      obj: "kafka.server:type=ReplicaFetchManager,name=MaxLag,clientId=Replica"
+      resultAlias: "replicaMaxLag"
+      attr:
+        - "Value"
+    - name: kafka_producer_purgatory
+      obj: "kafka.server:type=ProducerRequestPurgatory,name=PurgatorySize"
+      resultAlias: "producerPurgatorySize"
+      attr:
+        - "Value"
+    - name: kafka_fetch_purgatory
+      obj: "kafka.server:type=FetchRequestPurgatory,name=PurgatorySize"
+      resultAlias: "fetchPurgatorySize"
+      attr:
+        - "Value"
+    - name: kafka_request_total_time
+      obj: "kafka.network:type=RequestMetrics,name=TotalTimeMs,*"
+      typeName: "request"
+      resultAlias: "requestTotalTime"
+      attr:
+        - "Mean"
+        - "Max"
+        - "75thPercentile"
+        - "95thPercentile"
+        - "98thPercentile"
+        - "99thPercentile"
+        - "Count"
+    - name: kafka_request_local_time
+      obj: "kafka.network:type=RequestMetrics,name=LocalTimeMs,*"
+      typeName: "request"
+      resultAlias: "requestLocalTime"
+      attr:
+        - "Mean"
+        - "Max"
+        - "75thPercentile"
+        - "95thPercentile"
+        - "98thPercentile"
+        - "99thPercentile"
+        - "Count"
+    - name: kafka_request_remote_time
+      obj: "kafka.network:type=RequestMetrics,name=RemoteTimeMs,*"
+      typeName: "request"
+      resultAlias: "requestRemoteTime"
+      attr:
+        - "Mean"
+        - "Max"
+        - "75thPercentile"
+        - "95thPercentile"
+        - "98thPercentile"
+        - "99thPercentile"
+        - "Count"
+    - name: kafka_response_queue_time
+      obj: "kafka.network:type=RequestMetrics,name=ResponseQueueTimeMs,*"
+      typeName: "request"
+      resultAlias: "responseQueueTime"
+      attr:
+        - "Mean"
+        - "Max"
+        - "75thPercentile"
+        - "95thPercentile"
+        - "98thPercentile"
+        - "99thPercentile"
+        - "Count"
+    - name: kafka_request_queue_time
+      obj: "kafka.network:type=RequestMetrics,name=RequestQueueTimeMs,*"
+      typeName: "request"
+      resultAlias: "requestQueueTime"
+      attr:
+        - "Mean"
+        - "Max"
+        - "75thPercentile"
+        - "95thPercentile"
+        - "98thPercentile"
+        - "99thPercentile"
+        - "Count"
+    - name: kafka_response_send_time
+      obj: "kafka.network:type=RequestMetrics,name=ResponseSendTimeMs,*"
+      typeName: "request"
+      resultAlias: "responseSendTime"
+      attr:
+        - "Mean"
+        - "Max"
+        - "75thPercentile"
+        - "95thPercentile"
+        - "98thPercentile"
+        - "99thPercentile"
+        - "Count"
+    - name: kafka_network_processor_idle
+      obj: "kafka.network:type=SocketServer,name=NetworkProcessorAvgIdlePercent"
+      resultAlias: "networkProcessorAvgIdlePercent"
+      attr:
+        - "Value"
+    - name: kafka_request_handler_idle
+      obj: "kafka.server:type=KafkaRequestHandlerPool,name=RequestHandlerAvgIdlePercent"
+      resultAlias: "requestHandlerAvgIdlePercent"
+      attr:
+        - "MeanRate"
+        - "OneMinuteRate"
+        - "FiveMinuteRate"
+        - "FifteenMinuteRate"
+        - "Count"
+
+# Define named sets of hosts that get the queries above
+# query_names and hosts is a list
+sets:
+  - setname: kafka_prod
+    query_names:
+      - mempool
+      - gc
+      - sys
+      - threads
+      - kafka_broker_topic_metrics
+      - kafka_request_per_sec
+      - kafka_log_flush
+      - kafka_replica_manager
+      - kafka_controller
+      - kafka_controller_stats
+      - kafka_max_lag
+      - kafka_producer_purgatory
+      - kafka_fetch_purgatory
+      - kafka_request_total_time
+      - kafka_request_local_time
+      - kafka_request_remote_time
+      - kafka_request_queue_time
+      - kafka_response_send_time
+      - kafka_response_queue_time
+      - kafka_network_processor_idle
+      - kafka_request_handler_idle
+
+    hosts:
+      # the current (v246) yaml2jmxtrans.py uses the following format
+      # - hostname;alias/rootPrefix
+      # We recommend just making the alias the same as the hostname, but
+      #  you *must* use underscores instead of dots
+      - localhost:9990;kafka0/jmx
+      - localhost:9991;kafka1/jmx
+      - localhost:9992;kafka2/jmx
