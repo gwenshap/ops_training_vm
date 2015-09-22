@@ -14,10 +14,16 @@ This is a Vagrant file and a provisioning script to create a VM that includes:
 After installing vagrant and virtualbox...
 * Start with "vagrant up", ssh to the machine with "vagrant ssh"
 * Kafka is already running, so you can create few topics and produce and consume messages:
+
 kafka-topics --zookeeper localhost:2181 --create --topic t1 --partitions 3 --replication-factor 3
+
 kafka-producer-perf-test --broker-list localhost:9091 --topic t1 --messages 1000
+
 kafka-consumer-perf-test --zookeeper localhost:2181 --topic t1
+
 * You can create graphs and dashboards on graphite web interface: http://localhost:4567/dashboard
 * You can use the graphite web api to generate graphs directly:
+
 http://localhost:4567/render?target=jmx.kafka*.sys.OpenFileDescriptorCount&from=-1hours
+
 http://localhost:4567/render?target=jmx.kafka*.brokertopicmetrics.BytesInPerSec.OneMinuteRate&from=-1hours
