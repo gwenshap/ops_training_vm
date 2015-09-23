@@ -27,3 +27,8 @@ kafka-consumer-perf-test --zookeeper localhost:2181 --topic t1
 http://localhost:4567/render?target=jmx.kafka*.sys.OpenFileDescriptorCount&from=-1hours
 
 http://localhost:4567/render?target=jmx.kafka*.brokertopicmetrics.BytesInPerSec.OneMinuteRate&from=-1hours
+
+## Packing
+To pack, install packer (if using Mac OS X, homebrew is recommended). Then run:
+
+ packer build -only=virtualbox-ovf packer.json

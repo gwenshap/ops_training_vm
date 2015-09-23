@@ -1,0 +1,29 @@
+{
+    "builders": [{
+        "type": "virtualbox-ovf",
+        "source_path": "/Users/gwen/.vagrant.d/boxes/puppetlabs-VAGRANTSLASH-centos-6.6-64-puppet/1.0.2/virtualbox/box.ovf",
+        "ssh_username": "root",
+        "ssh_password": "puppet",
+        "ssh_wait_timeout": "30s",
+	"vboxmanage": [
+          ["modifyvm", "{{.Name}}", "--natpf1", "guest_graphite,tcp,127.0.0.1,4567,,8000"],
+          ["modifyvm", "{{.Name}}", "--natpf1", "guest_ssh,tcp,127.0.0.1,2222,,22"]
+        ],
+        "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
+    }],
+    "provisioners": [
+    {
+        "type": "file",
+        "source": "configfiles",
+        "destination": "/tmp"
+    },
+    {
+       "type" : "shell",
+	"script": "packerstrap.sh"
+    },
+    {
+        "type": "shell",
+        "script": "bootstrap.sh"
+    } ]
+}
+
