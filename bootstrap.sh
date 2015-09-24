@@ -24,6 +24,7 @@ sudo nohup kafka-rest-start /etc/kafka-rest/kafka-rest.properties </dev/null &>/
 sudo /usr/lib/python2.6/site-packages/graphite/manage.py syncdb --noinput
 echo "from django.contrib.auth.models import User; User.objects.create_superuser('admin', 'myemail@example.com', 'hunter2')" | sudo /usr/lib/python2.6/site-packages/graphite/manage.py shell
 sudo service carbon-cache start
+sudo chkconfig carbon-cache on
 
 sudo pip install gunicorn
 sudo mkdir /var/run/gunicorn-graphite
