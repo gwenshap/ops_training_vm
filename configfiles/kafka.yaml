@@ -109,7 +109,7 @@ queries:
         - "98thPercentile"
         - "Max"
     - name: kafka_max_lag
-      obj: "kafka.server:type=ReplicaFetchManager,name=MaxLag,clientId=Replica"
+      obj: "kafka.server:type=ReplicaFetcherManager,name=MaxLag,clientId=Replica"
       resultAlias: "replicaMaxLag"
       attr:
         - "Value"
