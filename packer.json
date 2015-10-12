@@ -1,16 +1,28 @@
 {
     "builders": [{
-        "type": "virtualbox-ovf",
-        "source_path": "/Users/gwen/.vagrant.d/boxes/puppetlabs-VAGRANTSLASH-centos-6.6-64-puppet/1.0.2/virtualbox/box.ovf",
+        "type": "virtualbox-iso",
+        "iso_url": "http://mirrors.sonic.net/centos/6/isos/x86_64/CentOS-6.7-x86_64-minimal.iso",
+        "iso_checksum": "9381a24b8bee2fed0c26896141a64b69",
+        "iso_checksum_type": "md5",
+        "http_directory": "configfiles",
+        "boot_command": [
+          "<wait><esc><esc>",
+          "linux ks=http://{{.HTTPIP}}:{{.HTTPPort}}/kickstart<enter>"
+        ],
+        "disk_size": 80480,
+        "guest_os_type": "RedHat_64",
         "ssh_username": "root",
-        "ssh_password": "puppet",
-        "ssh_wait_timeout": "30s",
-	"vboxmanage": [
+        "ssh_password": "vagrant",
+        "ssh_port": 22,
+        "ssh_wait_timeout": "10000s",
+        "shutdown_command": "echo 'packer' | sudo -S shutdown -P now",
+	      "vboxmanage": [
           ["modifyvm", "{{.Name}}", "--natpf1", "guest_graphite,tcp,127.0.0.1,4567,,8000"],
           ["modifyvm", "{{.Name}}", "--natpf1", "guest_ssh,tcp,127.0.0.1,2222,,22"],
-	  ["modifyvm", "{{.Name}}", "--memory", "2048"]
-        ],
-        "shutdown_command": "echo 'packer' | sudo -S shutdown -P now"
+	        ["modifyvm", "{{.Name}}", "--memory", "3072"],
+          ["modifyvm", "{{.Name}}", "--cpus", "1"],
+          ["modifyvm", "{{.Name}}", "--ioapic", "off"]
+        ]
     }],
     "provisioners": [
     {
@@ -27,4 +39,3 @@
         "script": "bootstrap.sh"
     } ]
 }
-

@@ -4,7 +4,7 @@ sudo rpm --import http://packages.confluent.io/rpm/1.0/archive.key
 sudo cp /vagrant/configfiles/confluent.repo /etc/yum.repos.d/
 
 sudo yum -y install http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum -y install java-1.8.0-openjdk java-1.8.0-openjdk-devel confluent-platform-2.10.4 graphite-web python-carbon python-pip python-yaml
+sudo yum -y install java-1.8.0-openjdk java-1.8.0-openjdk-devel confluent-platform-2.10.4 graphite-web python-carbon python-pip python-yaml wget
 
 sudo service iptables stop
 sudo chkconfig iptables off
