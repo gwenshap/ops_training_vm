@@ -31,4 +31,8 @@ http://localhost:4567/render?target=jmx.kafka*.brokertopicmetrics.BytesInPerSec.
 ## Packing
 To pack, install packer (if using Mac OS X, homebrew is recommended). Then run:
 
- packer build -only=virtualbox-ovf packer.json
+ packer build -only=virtualbox-iso packer.json
+
+Note that after it reboots after finishing "kickstart", it doesn't start on its own and packer is left waiting for SSH
+Just start it manually and packer will continue.
+Patches to fix this issue are welcome :)
