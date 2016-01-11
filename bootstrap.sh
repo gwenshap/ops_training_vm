@@ -1,10 +1,15 @@
 #!/usr/bin/env bash
 
-sudo rpm --import http://packages.confluent.io/rpm/1.0/archive.key
+sudo rpm --import http://packages.confluent.io/rpm/2.0/archive.key
 sudo cp /vagrant/configfiles/confluent.repo /etc/yum.repos.d/
 
 sudo yum -y install http://dl.fedoraproject.org/pub/epel/6/x86_64/epel-release-6-8.noarch.rpm
-sudo yum -y install java-1.8.0-openjdk java-1.8.0-openjdk-devel confluent-platform-2.10.4 graphite-web python-carbon python-pip python-yaml wget
+sudo yum -y install java-1.8.0-openjdk java-1.8.0-openjdk-devel graphite-web python-carbon python-pip python-yaml wget emacs
+
+
+# TODO: each package is installed separately to avoid installing librdkafka, which has yum dependency issues
+#       librdkafka should be installed from a tar.
+sudo yum -y install confluent-kafka-2.10.5 confluent-camus confluent-kafka-connect-hdfs confluent-kafka-connect-jdbc confluent-kafka-rest confluent-schema-registry
 
 sudo service iptables stop
 sudo chkconfig iptables off

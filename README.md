@@ -9,6 +9,8 @@ This is a Vagrant file and a provisioning script to create a VM that includes:
 * Gunicorn running the graphite web-server on port 8000 (exported to host machine as 4567)
 * JMXTrans sending Kafka metrics to graphite. Pre-configured with my favorite metrics
 
+All packages from Confluent Platform 2.0 are installed, except librdkafka.
+
 ## How to use this?
 
 After installing vagrant and virtualbox...
